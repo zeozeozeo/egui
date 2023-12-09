@@ -1,0 +1,18 @@
+[package]
+name = "egui-software"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+version.workspace = true
+
+[dependencies]
+softbuffer = "0.4.0"
+epaint = { version = "0.24.1", path = "../epaint" }
+
+#! ### Optional dependencies
+## Enable this when generating docs.
+winit = { version = "0.28", default-features = false, optional = true }
+
+[features]
+## Enable [`winit`](https://docs.rs/winit) integration.
+winit = ["dep:winit"]

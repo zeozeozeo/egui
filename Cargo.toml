@@ -9,6 +9,7 @@ members = [
     "crates/egui_plot",
     "crates/egui-wgpu",
     "crates/egui-winit",
+    "crates/egui-software",
     "crates/egui",
     "crates/emath",
     "crates/epaint",
