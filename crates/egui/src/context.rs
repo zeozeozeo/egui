@@ -2103,7 +2103,7 @@ impl Context {
         &self,
         shapes: Vec<ClippedShape>,
         pixels_per_point: f32,
-    ) -> Vec<ClippedPrimitive> {
+    ) -> Option<Vec<ClippedPrimitive>> {
         crate::profile_function!();
 
         // A tempting optimization is to reuse the tessellation from last frame if the
@@ -2112,11 +2112,7 @@ impl Context {
 
         self.write(|ctx| {
             let tessellation_options = ctx.memory.options.tessellation_options;
-            let texture_atlas = ctx
-                .fonts
-                .get(&pixels_per_point.into())
-                .expect("tessellate called before first call to Context::run()")
-                .texture_atlas();
+            let texture_atlas = ctx.fonts.get(&pixels_per_point.into())?.texture_atlas();
             let (font_tex_size, prepared_discs) = {
                 let atlas = texture_atlas.lock();
                 (atlas.size(), atlas.prepared_discs())
@@ -2134,7 +2130,7 @@ impl Context {
                 .tessellate_shapes(shapes)
             };
             ctx.paint_stats = paint_stats.with_clipped_primitives(&clipped_primitives);
-            clipped_primitives
+            Some(clipped_primitives)
         })
     }
 
